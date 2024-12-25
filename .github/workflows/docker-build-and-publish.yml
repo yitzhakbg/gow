@@ -78,7 +78,7 @@ jobs:
                   PUSH=false
 
                   if [ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
-                    IMAGES="gameonwhales/${{ inputs.image_name }}"
+                    IMAGES="ybarg/${{ inputs.image_name }}"
                     PUSH=true
                     echo "has_docker_token=true" >> $GITHUB_OUTPUT
                   fi
