@@ -1,7 +1,7 @@
 name: Automated builds
 
 on:
-    push:
+    workflow_dispatch:
         paths:
             - "images/**"
     pull_request: # They will only build the containers, not push them to our registry
