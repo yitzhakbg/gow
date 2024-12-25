@@ -1,55 +1,55 @@
 name: Automated builds
 
 on:
-  push:
-    paths:
-      - "images/**"
-  pull_request: # They will only build the containers, not push them to our registry
-    paths:
-      - "images/**"
-    types:
-      - opened
-      - reopened
+    push:
+        paths:
+            - "images/**"
+    pull_request: # They will only build the containers, not push them to our registry
+        paths:
+            - "images/**"
+        types:
+            - opened
+            - reopened
 #  schedule:
 #    - cron: "0 0 * * *" # nightly
 
 jobs:
-  base:
-    uses: ./.github/workflows/docker-build-and-publish.yml
-    with:
-      image_name: "base"
-    secrets: inherit
+    base:
+        uses: ./.github/workflows/docker-build-and-publish.yml
+        with:
+            image_name: "base"
+        secrets: inherit
 
-  base-app:
-    needs: [ base ]
-    uses: ./.github/workflows/docker-build-and-publish.yml
-    with:
-      image_name: "base-app"
-      base_image: "${{ needs.base.outputs.image_tag }}"
-    secrets: inherit
+    base-app:
+        needs: [base]
+        uses: ./.github/workflows/docker-build-and-publish.yml
+        with:
+            image_name: "base-app"
+            base_image: "${{ needs.base.outputs.image_tag }}"
+        secrets: inherit
 
-  apps:
-    needs: [ base, base-app ]
-    strategy:
-      matrix:
-        image:
-          - { name: xorg,                       platforms: "linux/amd64" }
-          - { name: pulseaudio,                 platforms: "linux/amd64" }
-          - { name: udevd,                      platforms: "linux/amd64" }
-          - { name: sunshine,                   platforms: "linux/amd64" }
-          - { name: retroarch,                  platforms: "linux/amd64" }
-          - { name: firefox,                    platforms: "linux/amd64" }
-          - { name: steam,                      platforms: "linux/amd64" }
-          - { name: pegasus,                    platforms: "linux/amd64" }
-          - { name: lutris,                     platforms: "linux/amd64" }
-          - { name: heroic-games-launcher,      platforms: "linux/amd64" }
-        #- { name: es-de,      platforms: "linux/amd64" }
-      fail-fast: false
-    uses: ./.github/workflows/docker-build-and-publish.yml
-    with:
-      image_name: "${{ matrix.image.name }}"
-      base_image: "${{ needs.base.outputs.image_tag }}"
-      base_app_image: "${{ needs.base-app.outputs.image_tag }}"
-      platforms: "${{ matrix.image.platforms }}"
-    secrets: inherit
-
+    apps:
+        needs: [base, base-app]
+        strategy:
+            matrix:
+                image:
+                    - { name: xorg, platforms: "linux/amd64" }
+                    - { name: pulseaudio, platforms: "linux/amd64" }
+                    - { name: udevd, platforms: "linux/amd64" }
+                    - { name: sunshine, platforms: "linux/amd64" }
+                    - { name: retroarch, platforms: "linux/amd64" }
+                    - { name: firefox, platforms: "linux/amd64" }
+                    - { name: anki, platforms: "linux/amd64" }
+                    - { name: steam, platforms: "linux/amd64" }
+                    - { name: pegasus, platforms: "linux/amd64" }
+                    - { name: lutris, platforms: "linux/amd64" }
+                    - { name: heroic-games-launcher, platforms: "linux/amd64" }
+                #- { name: es-de,      platforms: "linux/amd64" }
+            fail-fast: false
+        uses: ./.github/workflows/docker-build-and-publish.yml
+        with:
+            image_name: "${{ matrix.image.name }}"
+            base_image: "${{ needs.base.outputs.image_tag }}"
+            base_app_image: "${{ needs.base-app.outputs.image_tag }}"
+            platforms: "${{ matrix.image.platforms }}"
+        secrets: inherit
