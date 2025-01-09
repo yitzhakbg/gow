@@ -1,8 +1,8 @@
 #########################
-# firefox.yml
+# anki.yml
 #########################
 #
-# This container runs Firefox
+# This container runs anki
 
 services:
   # ####################
