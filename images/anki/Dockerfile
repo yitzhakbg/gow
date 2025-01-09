@@ -25,7 +25,7 @@ apt-get autoremove -y
 rm -rf /var/lib/apt/lists/*
 wget https://github.com/ankitects/anki/releases/download/24.11/anki-24.11-linux-qt6.tar.zst
 zstd -d anki-24.11-linux-qt6.tar.zst --stdout | tar -xf -
-cd anki-24.11-linux-qt6  && ./install.sh &&  cd ..
+cd anki-24.11-linux-qt6  && ./install.sh &&  mv anki /usr/bin && cd ..
 rm -rf anki-24.11-linux-qt6.tar.zst "anki-24.11-linux-qt6"
 apt-get clean
 _INSTALL_PACKAGES
